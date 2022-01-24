@@ -1,0 +1,44 @@
+*&---------------------------------------------------------------------*
+*& Report ZDIV
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zdiv.
+
+CLASS zdiv DEFINITION .
+  PUBLIC SECTION.
+" Declaration
+    DATA : p_inp1 TYPE i,
+           p_div1 TYPE i,
+           gv_result TYPE p DECIMALS 2.
+"Method defining
+    METHODS checkdiv IMPORTING p_inp TYPE i
+                               p_div TYPE i.
+ENDCLASS.
+
+CLASS zdiv IMPLEMENTATION.
+"main logic
+  METHOD checkdiv.
+    "initializing
+    p_inp1 = p_inp.
+    p_div1 = p_div.
+
+    DO p_inp TIMES.
+      gv_result = p_inp1 mod p_div.
+      IF gv_result = 0.
+        WRITE : / p_inp1.
+      ENDIF.
+      p_inp1 = p_inp1 - 1.
+    ENDDO.
+
+  ENDMETHOD.
+ENDCLASS.
+
+PARAMETERS : p_inp TYPE i,
+             p_div TYPE i.
+
+DATA : obj TYPE REF TO zdiv.
+
+START-OF-SELECTION.
+  CREATE OBJECT obj.
+  CALL METHOD obj->checkdiv( p_inp = p_inp p_div = p_div ).
